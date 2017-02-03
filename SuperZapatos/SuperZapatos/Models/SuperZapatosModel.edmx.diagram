@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d0585ae9172441f39326b944ca7f3ca7" Name="Diagram1">
+        <EntityTypeShape EntityType="SuperZapatosModel.Articles" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="SuperZapatosModel.Stores" Width="1.5" PointX="0.75" PointY="1.375" />
+        <AssociationConnector Association="SuperZapatosModel.FK_Articles_Stores" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

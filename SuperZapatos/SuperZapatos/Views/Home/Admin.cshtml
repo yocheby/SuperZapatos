@@ -1,0 +1,185 @@
+﻿
+@{
+    ViewBag.Title = "Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Administración</h2>
+
+
+    @*<label class="control-label col-md-2">Clave</label>*@
+    
+<div class="jumbotron">
+    @*<div class="col-lg-4">*@
+        <p><a class="btn btn-default" onclick="ListArticles()">&raquo; Listar articulos</a></p>
+        <p><a class="btn btn-default" onclick="ListStores()">&raquo; Listar tiendas </a></p>
+        <p>
+            ID Tienda: <input type="text" id="idstore" class="text-success" value="" style="width:40px;" />
+            <a class="btn btn-default" onclick="ListArticlesByIdStore()">&raquo; Articulos segun tienda</a>        
+    </p>
+    <br />
+    <p>
+        <table id="table" class="table"></table>
+        <label class="alert-danger" id="error"></label>
+    </p>
+        @*</div>*@
+</div>
+
+
+<script>
+
+    var baseUrl = '@Url.Content("~/")';
+    
+    function ListArticles() {
+
+        Clear();
+        var uri = 'api/services/articles';
+        var credentials = "bXlfdXNlcjpteV9wYXNzd29yZA==";
+        var authType = "Basic " + credentials;
+
+        $.ajax({
+            url: baseUrl + uri,
+            type: "GET",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", authType);
+            },
+            success: function (data) {
+                             
+                EvalDataArticles(data);
+            },
+            error: function (data) {
+                alert("Error consultando");
+            }
+        });
+
+    }
+
+    function ListStores() {
+
+        Clear();
+        var uri = 'api/services/stores';
+        var credentials = "bXlfdXNlcjpteV9wYXNzd29yZA==";
+        var authType = "Basic " + credentials;
+
+        $.ajax({
+            url: baseUrl + uri,
+            type: "GET",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", authType);
+            },
+            success: function (data) {
+
+                if (data) {
+                    
+                    if (data.success == "false") {
+                        ErrorFunction(data);
+                        return;
+                    }
+
+                    var txt = "";
+
+                    if (data.total_elements == 1) {
+                        var item = data.store;
+                            txt += "<tr><th>" + "Tienda" + "</th><th>" + "Dirección" + "</th></tr>";
+                        txt += "<tr><td>" + item.name + "</td><td>" + item.address + "</td></tr>";
+                        $("#table").append(txt).removeClass("hidden");
+                    }
+                    else {
+                        txt += "<tr><th>" + "Tienda" + "</th><th>" + "Dirección" + "</th></tr>";
+                        for (var i = 0; i < data.total_elements; i++) {
+                            var item = data.stores[i];
+                            txt += "<tr><td>" + item.name + "</td><td>" + item.address + "</td></tr>";
+                        }
+
+                        if (txt != "") {
+                            $("#table").append(txt).removeClass("hidden");
+                        }
+                    }
+                }
+            },
+            error: function (data) {
+                alert('error');
+                $('#resultado').val(data);
+            }
+        });
+
+    }
+
+    function ListArticlesByIdStore()
+    {
+        Clear();
+        var storeid = $("#idstore").val();
+
+        var uri = 'api/services/ArticlesById/' + storeid;
+        //var uri = 'api/services/articles';
+        var credentials = "bXlfdXNlcjpteV9wYXNzd29yZA==";
+        var authType = "Basic " + credentials;
+
+        $.ajax({
+            url: baseUrl + uri,
+            type: "GET",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", authType);
+            },
+            success: function (data) {
+                EvalDataArticles(data);
+            },
+            error: function (data) {
+                alert("No se ingreso una tienda.");
+            }
+        });
+    }
+
+    function ShowJson(data)
+    {
+        var jsonStr = JSON.stringify(data);
+        document.body.innerHTML = jsonStr;
+    }
+
+    function ErrorFunction(data) {
+        var messageError = data.error_msg;
+        var codoError = data.error_code;
+        $('#error').text("Error: " + messageError + " Código: " + codoError);
+    }
+
+    function Clear() {
+        $('#error').text("");
+        //var rowCount = $('#table tr').length;
+        $("#table tbody tr").remove();
+    }
+
+    function EvalDataArticles(data) {
+
+        if (data) {
+
+            if (data.success == "false") {
+                ErrorFunction(data);
+                return;
+            }
+
+            var txt = "";
+            txt += "<tr><th>" + "Articulo" + "</th><th>" + "Precio" + "</th><th>" + "Tienda" + "</th><th>" + "En repisa" + "</th><th>" + "En bodega" + "</th></tr>";
+
+            if (data.total_elements == 1) {
+                var item = data.article;
+                txt += "<tr><td>" + item.name + "</td><td>" + item.price + "</td><td>" + item.store_name + "</td><td>" + item.total_in_shelf + "</td><td>" + item.total_in_vault + "</td></tr>";
+                $("#table").append(txt).removeClass("hidden");
+            }
+            else {
+                for (var i = 0; i < data.total_elements; i++) {
+                    var item = data.articles[i];
+                    txt += "<tr><td>" + item.name + "</td><td>" + item.price + "</td><td>" + item.store_name + "</td><td>" + item.total_in_shelf + "</td><td>" + item.total_in_vault + "</td></tr>";
+                }
+
+                if (txt != "") {
+                    $("#table").append(txt).removeClass("hidden");
+                }
+            }
+        }
+    }
+
+</script>
+
+
+
+

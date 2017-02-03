@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SuperZapatosModelStoreContainer" CdmEntityContainer="SuperZapatosEntities">
+    <EntitySetMapping Name="Articles">
+      <EntityTypeMapping TypeName="SuperZapatosModel.Articles">
+        <MappingFragment StoreEntitySet="Articles">
+          <ScalarProperty Name="store_id" ColumnName="store_id" />
+          <ScalarProperty Name="total_in_vault" ColumnName="total_in_vault" />
+          <ScalarProperty Name="total_in_shelf" ColumnName="total_in_shelf" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Stores">
+      <EntityTypeMapping TypeName="SuperZapatosModel.Stores">
+        <MappingFragment StoreEntitySet="Stores">
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

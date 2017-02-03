@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SuperZapatosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="SuperZapatosEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Articles" EntityType="SuperZapatosModel.Articles" />
+    <EntitySet Name="Stores" EntityType="SuperZapatosModel.Stores" />
+    <AssociationSet Name="FK_Articles_Stores" Association="SuperZapatosModel.FK_Articles_Stores">
+      <End Role="Stores" EntitySet="Stores" />
+      <End Role="Articles" EntitySet="Articles" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Articles">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="price" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="total_in_shelf" Type="Int32" Nullable="false" />
+    <Property Name="total_in_vault" Type="Int32" Nullable="false" />
+    <Property Name="store_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Stores" Relationship="SuperZapatosModel.FK_Articles_Stores" FromRole="Articles" ToRole="Stores" />
+  </EntityType>
+  <EntityType Name="Stores">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="address" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Articles" Relationship="SuperZapatosModel.FK_Articles_Stores" FromRole="Stores" ToRole="Articles" />
+  </EntityType>
+  <Association Name="FK_Articles_Stores">
+    <End Type="SuperZapatosModel.Stores" Role="Stores" Multiplicity="1" />
+    <End Type="SuperZapatosModel.Articles" Role="Articles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Stores">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Articles">
+        <PropertyRef Name="store_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

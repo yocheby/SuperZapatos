@@ -1,0 +1,1 @@
+El proyecto se realizó en VisualStudio 2015 con SQLServer 2016 con autenticación Windows.
